@@ -32,23 +32,26 @@ plt.cm.register_cmap(cmap=cmap)
 
 # #############################################################################
 # Generate datasets
-def dataset_fixed_cov():
+def data_aud_dmn():
 
     DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
     X, y = (DataTable[:,1:3]).astype(np.float), (DataTable[:,0]=='1')
     return X, y
 
 
-def dataset_cov():
+def data_aud_sal():
+    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    X, y = (DataTable[:,[1,5]]).astype(np.float), (DataTable[:,0]=='1')
+    return X, y
+
+def data_dmn_sal():
     DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
     X, y = (DataTable[:,[2,5]]).astype(np.float), (DataTable[:,0]=='1')
     return X, y
-
-
 # #############################################################################
 # Plot functions
 def plot_data(lda, X, y, y_pred, fig_index):
-    splot = plt.subplot(2, 2, fig_index)
+    splot = plt.subplot(3, 2, fig_index)
     if fig_index == 1:
         plt.title('Linear Discriminant Analysis')
         plt.ylabel('Data with\n fixed covariance')
@@ -76,6 +79,11 @@ def plot_data(lda, X, y, y_pred, fig_index):
              color='blue', markeredgecolor='k')
     plt.plot(X1_fp[:, 0], X1_fp[:, 1], '*', alpha=alpha,
              color='#000099', markeredgecolor='k')  # dark blue
+    # class 1: dots
+    plt.plot(X1_tp[:, 0], X1_tp[:, 1], 'o', alpha=alpha,
+             color='blue', markeredgecolor='k')
+    plt.plot(X1_fp[:, 0], X1_fp[:, 1], '*', alpha=alpha,
+             color='#009900', markeredgecolor='k')  # dark green
 
     # class 0 and 1 : areas
     nx, ny = 200, 100
@@ -124,7 +132,7 @@ def plot_qda_cov(qda, splot):
     plot_ellipse(splot, qda.means_[0], qda.covariances_[0], 'red')
     plot_ellipse(splot, qda.means_[1], qda.covariances_[1], 'blue')
 
-for i, (X, y) in enumerate([dataset_fixed_cov(), dataset_cov()]):
+for i, (X, y) in enumerate([data_aud_dmn(), data_aud_sal(), data_dmn_sal()]):
     # Linear Discriminant Analysis
     lda = LinearDiscriminantAnalysis(solver="svd", store_covariance=True)
     y_pred = lda.fit(X, y).predict(X)
