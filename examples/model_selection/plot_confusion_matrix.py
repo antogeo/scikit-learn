@@ -35,17 +35,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 
 # import some data to play with
-iris = datasets.load_iris()
-X = iris.data
-y = iris.target
-class_names = iris.target_names
+DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+X, y = (DataTable[:,[1,2,5]]).astype(np.float), (DataTable[:,0]=='1')
+class_names = ['MCS', 'UWS']
 
 # Split the data into a training set and a test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
 # Run classifier, using a model that is too regularized (C too low) to see
 # the impact on the results
-classifier = svm.SVC(kernel='linear', C=0.01)
+classifier = svm.SVC(kernel='linear', C=0.001)
 y_pred = classifier.fit(X_train, y_train).predict(X_test)
 
 

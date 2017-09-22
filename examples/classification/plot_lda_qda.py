@@ -19,7 +19,7 @@ from matplotlib import colors
 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-
+%matplotlib
 # #############################################################################
 # Colormap
 cmap = colors.LinearSegmentedColormap(
@@ -33,24 +33,15 @@ plt.cm.register_cmap(cmap=cmap)
 # #############################################################################
 # Generate datasets
 def dataset_fixed_cov():
-    '''Generate 2 Gaussians samples with the same covariance matrix'''
-    n, dim = 300, 2
-    np.random.seed(0)
-    C = np.array([[0., -0.23], [0.83, .23]])
-    X = np.r_[np.dot(np.random.randn(n, dim), C),
-              np.dot(np.random.randn(n, dim), C) + np.array([1, 1])]
-    y = np.hstack((np.zeros(n), np.ones(n)))
+
+    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    X, y = (DataTable[:,1:3]).astype(np.float), (DataTable[:,0]=='1')
     return X, y
 
 
 def dataset_cov():
-    '''Generate 2 Gaussians samples with different covariance matrices'''
-    n, dim = 300, 2
-    np.random.seed(0)
-    C = np.array([[0., -1.], [2.5, .7]]) * 2.
-    X = np.r_[np.dot(np.random.randn(n, dim), C),
-              np.dot(np.random.randn(n, dim), C.T) + np.array([1, 4])]
-    y = np.hstack((np.zeros(n), np.ones(n)))
+    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    X, y = (DataTable[:,[2,5]]).astype(np.float), (DataTable[:,0]=='1')
     return X, y
 
 

@@ -39,28 +39,24 @@ from itertools import cycle
 from sklearn import svm, datasets
 from sklearn.metrics import roc_curve, auc
 from sklearn.model_selection import StratifiedKFold
-
+#%matplotlib
 # #############################################################################
 # Data IO and generation
 
 # Import some data to play with
-iris = datasets.load_iris()
-X = iris.data
-y = iris.target
-X, y = X[y != 2], y[y != 2]
+DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+X, y = (DataTable[:,[1,5]]).astype(np.float), (DataTable[:,0]=='1')
 n_samples, n_features = X.shape
 
-# Add noisy features
 random_state = np.random.RandomState(0)
-X = np.c_[X, random_state.randn(n_samples, 200 * n_features)]
+# X = np.c_[X, random_state.randn(n_samples, 200 * n_features)]
 
 # #############################################################################
 # Classification and ROC analysis
 
 # Run classifier with cross-validation and plot ROC curves
 cv = StratifiedKFold(n_splits=6)
-classifier = svm.SVC(kernel='linear', probability=True,
-                     random_state=random_state)
+classifier = svm.SVC(kernel='linear', probability=True)
 
 tprs = []
 aucs = []

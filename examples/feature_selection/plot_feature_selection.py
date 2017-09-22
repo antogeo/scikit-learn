@@ -31,14 +31,9 @@ from sklearn.feature_selection import SelectPercentile, f_classif
 # Import some data to play with
 
 # The iris dataset
-iris = datasets.load_iris()
-
-# Some noisy data not correlated
-E = np.random.uniform(0, 0.1, size=(len(iris.data), 20))
-
-# Add the noisy data to the informative features
-X = np.hstack((iris.data, E))
-y = iris.target
+%matplotlib
+DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+X, y = (DataTable[:,1:7]).astype(np.float), (DataTable[:,0]=='1')
 
 plt.figure(1)
 plt.clf()
@@ -48,7 +43,7 @@ X_indices = np.arange(X.shape[-1])
 # #############################################################################
 # Univariate feature selection with F-test for feature scoring
 # We use the default selection function: the 10% most significant features
-selector = SelectPercentile(f_classif, percentile=10)
+selector = SelectPercentile(f_classif, percentile=50)
 selector.fit(X, y)
 scores = -np.log10(selector.pvalues_)
 scores /= scores.max()
