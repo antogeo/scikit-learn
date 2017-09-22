@@ -39,7 +39,7 @@ from itertools import cycle
 from sklearn import svm, datasets
 from sklearn.metrics import roc_curve, auc
 from sklearn.model_selection import StratifiedKFold
-#%matplotlib
+%matplotlib
 # #############################################################################
 # Data IO and generation
 

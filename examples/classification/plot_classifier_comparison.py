@@ -62,17 +62,23 @@ classifiers = [
     GaussianNB(),
     QuadraticDiscriminantAnalysis()]
 
-X, y = make_classification(n_features=2, n_redundant=0, n_informative=2,
-                           random_state=1, n_clusters_per_class=1)
-rng = np.random.RandomState(2)
-X += 2 * rng.uniform(size=X.shape)
-linearly_separable = (X, y)
+# X, y = make_classification(n_features=2, n_redundant=0, n_informative=2,
+#                            random_state=1, n_clusters_per_class=1)
+# rng = np.random.RandomState(2)
+# X += 2 * rng.uniform(size=X.shape)
+# linearly_separable = (X, y)
+#
+# datasets = [make_moons(noise=0.3, random_state=0),
+#             make_circles(noise=0.2, factor=0.5, random_state=1),
+#             linearly_separable
+#             ]
 
-datasets = [make_moons(noise=0.3, random_state=0),
-            make_circles(noise=0.2, factor=0.5, random_state=1),
-            linearly_separable
+DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+X, y = (DataTable[:,1:7]).astype(np.float), (DataTable[:,0]=='1')
+datasets = [([X[:, 1:3], y]),
+            ([X[:, [1, 5]], y]),
+            ([X[:, [2, 5]], y])
             ]
-
 figure = plt.figure(figsize=(27, 9))
 i = 1
 # iterate over datasets
