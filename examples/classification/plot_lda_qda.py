@@ -54,11 +54,13 @@ def plot_data(lda, X, y, y_pred, fig_index):
     splot = plt.subplot(3, 2, fig_index)
     if fig_index == 1:
         plt.title('Linear Discriminant Analysis')
-        plt.ylabel('Data with\n fixed covariance')
+        plt.ylabel('AUD_DMN')
     elif fig_index == 2:
         plt.title('Quadratic Discriminant Analysis')
     elif fig_index == 3:
-        plt.ylabel('Data with\n varying covariances')
+        plt.ylabel('AUD_SAL')
+    elif fig_index == 4:
+        plt.ylabel('DMN_SAL')
 
     tp = (y == y_pred)  # True Positive
     tp0, tp1 = tp[y == 0], tp[y == 1]
