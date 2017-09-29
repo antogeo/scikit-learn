@@ -39,23 +39,24 @@ from itertools import cycle
 from sklearn import svm, datasets
 from sklearn.metrics import roc_curve, auc
 from sklearn.model_selection import StratifiedKFold
+from sklearn import cross_validation
 %matplotlib
 # #############################################################################
 # Data IO and generation
 
 # Import some data to play with
-DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
 X, y = (DataTable[:,[1,5]]).astype(np.float), (DataTable[:,0]=='1')
 n_samples, n_features = X.shape
 
-random_state = np.random.RandomState(0)
+# random_state = np.random.RandomState(0)
 # X = np.c_[X, random_state.randn(n_samples, 200 * n_features)]
 
 # #############################################################################
 # Classification and ROC analysis
 
 # Run classifier with cross-validation and plot ROC curves
-cv = StratifiedKFold(n_splits=6)
+cv =  cross_validation.ShuffleSplit(53, n_iter=500, test_size=.25, random_state=0)
 classifier = svm.SVC(kernel='linear', probability=True)
 
 tprs = []
@@ -63,7 +64,7 @@ aucs = []
 mean_fpr = np.linspace(0, 1, 100)
 
 i = 0
-for train, test in cv.split(X, y):
+for train, test in cv:
     probas_ = classifier.fit(X[train], y[train]).predict_proba(X[test])
     # Compute ROC curve and area the curve
     fpr, tpr, thresholds = roc_curve(y[test], probas_[:, 1])

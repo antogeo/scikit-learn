@@ -73,7 +73,7 @@ classifiers = [
 #             linearly_separable
 #             ]
 
-DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
 X, y = (DataTable[:,1:7]).astype(np.float), (DataTable[:,0]=='1')
 datasets = [([X[:, 1:3], y]),
             ([X[:, [1, 5]], y]),
