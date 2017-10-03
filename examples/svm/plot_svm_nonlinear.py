@@ -10,7 +10,7 @@ inputs.
 The color map illustrates the decision function learned by the SVC.
 """
 print(__doc__)
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import svm
@@ -19,10 +19,17 @@ from sklearn import svm
 # np.random.seed(0)
 # X = np.random.randn(300, 2)
 # Y = np.logical_xor(X[:, 0] > 0, X[:, 1] > 0)
-DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+if os.uname()[1]== 'antogeo-XPS':
+    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    TestSet = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
+elif os.uname()[1]== 'coma_meth':
+    DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    TestSet = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
+
 X, y = (DataTable[:,1:3]).astype(np.float), (DataTable[:,0]=='1')
-xx, yy = np.meshgrid(np.linspace(min(X[:, 0]), max(X[:, 0]), 500),
-np.linspace(min(X[:, 1]), max(X[:, 1]), 500))
+
+xx, yy = np.meshgrid(np.linspace(min(X[:, 0]), max(X[:, 0]), 100),
+np.linspace(min(X[:, 1]), max(X[:, 1]), 100))
 
 # fit the model
 clf = svm.NuSVC()
