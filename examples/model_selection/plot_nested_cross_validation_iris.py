@@ -55,9 +55,12 @@ print(__doc__)
 NUM_TRIALS = 30
 
 # Load the dataset
-iris = load_iris()
-X_iris = iris.data
-y_iris = iris.target
+# iris = load_iris()
+# networks = iris.data
+# lbls = iris.target
+
+DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+networks, lbls = (DataTable[:,1:7]).astype(np.float), (DataTable[:,0]=='1')
 
 # Set up possible values of parameters to optimize over
 p_grid = {"C": [1, 10, 100],
@@ -81,11 +84,12 @@ for i in range(NUM_TRIALS):
 
     # Non_nested parameter search and scoring
     clf = GridSearchCV(estimator=svm, param_grid=p_grid, cv=inner_cv)
-    clf.fit(X_iris, y_iris)
+    clf.fit(networks, lbls)
     non_nested_scores[i] = clf.best_score_
 
     # Nested CV with parameter optimization
-    nested_score = cross_val_score(clf, X=X_iris, y=y_iris, cv=outer_cv)
+    nested_score = cross_val_score(clf, X=networks, y=lbls, cv=outer_cv)
+
     nested_scores[i] = nested_score.mean()
 
 score_difference = non_nested_scores - nested_scores

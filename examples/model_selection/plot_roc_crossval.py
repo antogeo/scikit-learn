@@ -52,7 +52,7 @@ elif os.uname()[1]== 'coma_meth':
     TestSet = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
 
 
-X, y = (DataTable[:,1]).astype(np.float), (DataTable[:,0]=='1')
+X, y = (DataTable[:,[1,2,3,5]]).astype(np.float), (DataTable[:,0]=='1')
 n_samples, n_features = X.shape
 
 # random_state = np.random.RandomState(0)
@@ -63,7 +63,7 @@ n_samples, n_features = X.shape
 
 # Run classifier with cross-validation and plot ROC curves
 cv =  cross_validation.ShuffleSplit(53, n_iter=500, test_size=.25, random_state=0)
-classifier = svm.SVC(C=.1, gamma=1, probability=True)
+classifier = svm.SVC(C=1, gamma=.1, probability=True)
 
 tprs = []
 aucs = []

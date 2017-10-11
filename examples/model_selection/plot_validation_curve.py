@@ -12,7 +12,7 @@ is too high, the classifier will overfit, which means that the training score
 is good but the validation score is poor.
 """
 print(__doc__)
-
+%matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -22,7 +22,7 @@ from sklearn.model_selection import validation_curve
 
 digits = load_digits()
 X, y = digits.data, digits.target
-
+plt.figure()
 param_range = np.logspace(-6, -1, 5)
 train_scores, test_scores = validation_curve(
     SVC(), X, y, param_name="gamma", param_range=param_range,
