@@ -75,11 +75,11 @@ classifiers = [
 #             linearly_separable
 #             ]
 if os.uname()[1]== 'antogeo-XPS':
-    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/InNetFeat.csv',delimiter=',',dtype=None)[1:]
-    TestSet = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/InNetFeatTEST.csv',delimiter=',',dtype=None)[1:]
-elif os.uname()[1]== 'coma_meth':
-    DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/InNetFeat.csv',delimiter=',',dtype=None)[1:]
-    TestSet = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/InNetFeatTEST.csv',delimiter=',',dtype=None)[1:]
+    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    TestSet = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
+elif os.uname()[1]== 'comameth':
+    DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/train_allFeat',delimiter=',',dtype=None)[1:]
+    TestSet = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
 
 X, y = (DataTable[:,1:12]).astype(np.float), (DataTable[:,0]=='1')
 datasets = [([X[:, 1:12], y]),

@@ -40,7 +40,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-
+%matplotlib
 h = .02  # step size in the mesh
 
 names = ["Nearest Neighbors", "Linear SVM", "RBF SVM", "Gaussian Process",
@@ -71,32 +71,36 @@ classifiers = [
 #             ]
 
 if os.uname()[1]== 'antogeo-XPS':
-    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/InNetFeat.csv',delimiter=',',dtype=None)[1:]
-    TestSet = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/InNetFeatTEST.csv',delimiter=',',dtype=None)[1:]
-elif os.uname()[1]== 'coma_meth':
-    DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/InNetFeat.csv',delimiter=',',dtype=None)[1:]
-    TestSet = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/InNetFeatTEST.csv',delimiter=',',dtype=None)[1:]
+    DataTable = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/train_allFeat',delimiter=',',dtype=None)[1:]
+    TestSet = np.genfromtxt('/home/antogeo/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
+elif os.uname()[1]== 'comameth':
+    DataTable = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/train_allFeat.csv',delimiter=',',dtype=None)[1:]
+    TestSet = np.genfromtxt('/home/coma_meth/Dropbox/Lizette_yorgos/test_allFeat.csv',delimiter=',',dtype=None)[1:]
 
-X_tr_full, y_tr_full = (DataTable[:,1:12]).astype(np.float), (DataTable[:,0]=='1')
-trainsets = [([X_tr_full[:,[0,1,3]], y_tr_full]),
-            ([X_tr_full[:, 2:4], y_tr_full]),
-            ([X_tr_full[:, 9:11], y_tr_full])
+X_tr_full, y_tr_full = (DataTable[:,1:7]).astype(np.float), (DataTable[:,0]=='1')
+trainsets = [([X_tr_full[:, [0,1,3,4]], y_tr_full]),
+             ([X_tr_full[:, [0,1,4,5]], y_tr_full]),
+             ([X_tr_full[:, :], y_tr_full])
             ]
-X_ts_full, y_ts_full = (TestSet[:, 1:12]).astype(np.float), (TestSet[:,0]=='1')
-testsets = [([X_ts_full[:, [0,1,3]], y_ts_full]),
-            ([X_ts_full[:, 2:4], y_ts_full]),
-            ([X_ts_full[:, 9:11], y_ts_full])
+X_ts_full, y_ts_full = (TestSet[:, 1:7]).astype(np.float), (TestSet[:,0]=='1')
+testsets = [([X_ts_full[:, [0,1,3,4]], y_ts_full]),
+            ([X_ts_full[:, [0,1,4,5]], y_ts_full]),
+            ([X_ts_full[:, :], y_ts_full])
             ]
 
-
+scaler= StandardScaler()
 figure = plt.figure(figsize=(27, 9))
 i = 1
 # iterate over trainsets
 for ds_cnt, ds in enumerate(trainsets):
     # preprocess dataset, split into training and test part
     X_train, y_train = ds
-    # X_train = StandardScaler().fit_transform(X_train)
+    scaler.fit(X_train)
+    X_train = scaler.transform(X_train)
+
     X_test, y_test = testsets[ds_cnt]
+
+    X_test= scaler.transform(X_test)
 
     x_min, x_max = X_train[:, 0].min() - .5, X_train[:, 0].max() + .5
     y_min, y_max = X_train[:, 1].min() - .5, X_train[:, 1].max() + .5
@@ -152,6 +156,6 @@ for ds_cnt, ds in enumerate(trainsets):
         ax.text(xx.max() - .3, yy.min() + .3, ('%.2f' % score).lstrip('0'),
                 size=15, horizontalalignment='right')
         i += 1
-
+clf.predict(X_test)
 plt.tight_layout()
 plt.show()
